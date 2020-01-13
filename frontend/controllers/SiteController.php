@@ -89,9 +89,11 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
+
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
         } else {
+
             $model->password = '';
 
             return $this->render('login', [
@@ -154,7 +156,7 @@ class SiteController extends Controller
     {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+//            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             return $this->goHome();
         }
 

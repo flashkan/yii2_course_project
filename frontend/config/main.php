@@ -36,13 +36,15 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::class
+        ]
 
     ],
     'params' => $params,
