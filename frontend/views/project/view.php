@@ -4,14 +4,16 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Tasks */
+/* @var $model app\models\Project */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Projects', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
-<div class="tasks-view">
+<div class="project-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
@@ -30,18 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            [
-                'attribute' => 'project_id',
-                'format' => 'raw',
-
-                'value' => function($data) {
-                    $project = \app\models\Project::findProject($data->project_id);
-                    return Html::a($project->name, ["../project/view?id=$project->id"]);
-                }
-            ],
+            'name',
             'description:ntext',
-            'created_at:datetime',
-            'updated_at:datetime',
             [
                 'attribute' => 'status',
                 'value' => function ($date) {
@@ -52,8 +44,31 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'author',
-                'value' => function($date) {
+                'value' => function ($date) {
                     return \common\models\User::findIdentity($date->author)->email;
+                }
+            ],
+            'created_at:datetime',
+            'updated_at:datetime',
+        ],
+    ]) ?>
+
+    <?= \yii\grid\GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            [
+                'attribute' => 'name',
+                'format' => 'raw',
+                'value' => function ($data) {
+                    return Html::a($data->name, ["../task/view?id=$data->id"]);
+                },
+            ],
+            [
+                'attribute' => 'status',
+                'value' => function ($date) {
+                    if ($date->status === 1) return 'Awaiting start';
+                    elseif ($date->status === 2) return 'Run';
+                    elseif ($date->status === 3) return 'Finished';
                 }
             ],
             [
@@ -62,18 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \common\models\User::findIdentity($date->executor)->email;
                 }
             ],
-        ],
-    ]) ?>
-    <?php
-    /*    echo \kartik\datetime\DateTimePicker::widget([
-        'name' => 'datetime_10',
-        'options' => ['placeholder' => 'Select operating time ...'],
-        'convertFormat' => true,
-        'pluginOptions' => [
-        'format' => 'dd-MM-y H:i A',
-        'startDate' => '01-Mar-2014 12:00 AM',
-        'todayHighlight' => true
         ]
-        ]);
-    */ ?>
+    ]) ?>
+
+
 </div>

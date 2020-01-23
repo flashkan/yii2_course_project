@@ -3,16 +3,16 @@
 namespace frontend\controllers;
 
 use Yii;
-use app\models\Tasks;
+use app\models\TaskTemp;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * TaskController implements the CRUD actions for Tasks model.
+ * TaskTempController implements the CRUD actions for TaskTemp model.
  */
-class TaskController extends Controller
+class TaskTempController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -30,13 +30,13 @@ class TaskController extends Controller
     }
 
     /**
-     * Lists all Tasks models.
+     * Lists all TaskTemp models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Tasks::find(),
+            'query' => TaskTemp::find(),
         ]);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Displays a single Tasks model.
+     * Displays a single TaskTemp model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -58,13 +58,13 @@ class TaskController extends Controller
     }
 
     /**
-     * Creates a new Tasks model.
+     * Creates a new TaskTemp model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Tasks();
+        $model = new TaskTemp();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -76,7 +76,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Updates an existing Tasks model.
+     * Updates an existing TaskTemp model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -85,6 +85,7 @@ class TaskController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -95,7 +96,7 @@ class TaskController extends Controller
     }
 
     /**
-     * Deletes an existing Tasks model.
+     * Deletes an existing TaskTemp model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -109,15 +110,15 @@ class TaskController extends Controller
     }
 
     /**
-     * Finds the Tasks model based on its primary key value.
+     * Finds the TaskTemp model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Tasks the loaded model
+     * @return TaskTemp the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Tasks::findOne($id)) !== null) {
+        if (($model = TaskTemp::findOne($id)) !== null) {
             return $model;
         }
 

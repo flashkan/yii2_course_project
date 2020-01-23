@@ -3,18 +3,26 @@
 namespace app\models;
 
 use common\models\User;
+use frontend\controllers\TaskController;
 use Yii;
-
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "tasks".
  *
  * @property int $id
+ * @property int|null $project_id
  * @property string|null $name
- * @property int $auhtor
- * @property string $day
+ * @property string|null $description
+ * @property int|null $created_at
+ * @property int|null $updated_at
+ * @property int|null $status
+ * @property int|null $author
+ * @property int|null $executor
+ * @property int|null $is_template
  *
- * @property User $id0
+ * @property User $author0
+ * @property User $executor0
  */
 class Tasks extends \yii\db\ActiveRecord
 {
@@ -27,17 +35,43 @@ class Tasks extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return array
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => time(),
+            ]
+        ];
+    }
+
+    public function beforeValidate()
+    {
+        if ($this->is_template) {
+            $model = new TaskTemp();
+            $model->attributes = $this->attributes;
+            $model->save();
+        }
+        return parent::beforeValidate();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'auhtor', 'day'], 'required'],
-            [['id', 'auhtor'], 'integer'],
-            [['day'], 'safe'],
-            [['name'], 'string', 'max' => 45],
-            [['id'], 'unique'],
-            [['id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['id' => 'id']],
+            [['description'], 'string'],
+            [['project_id', 'created_at', 'updated_at', 'status', 'author', 'executor', 'is_template'], 'integer'],
+            [['name'], 'string', 'max' => 255],
+            [['author'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['author' => 'id']],
+            [['executor'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['executor' => 'id']],
+            [['project_id'], 'exist', 'skipOnError' => true, 'targetClass' => Project::className(), 'targetAttribute' => ['project_id' => 'id']],
+            [['author'], 'default', 'value' => Yii::$app->user->id],
         ];
     }
 
@@ -48,17 +82,39 @@ class Tasks extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'project_id' => 'Project',
             'name' => 'Name',
-            'auhtor' => 'Auhtor',
-            'day' => 'Day',
+            'description' => 'Description',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
+            'status' => 'Status',
+            'author' => 'Author',
+            'executor' => 'Executor',
+            'is_template' => 'Is Template',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getId0()
+    public function getAuthor0()
     {
-        return $this->hasOne(User::className(), ['id' => 'id']);
+        return $this->hasOne(User::className(), ['id' => 'author']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getExecutor0()
+    {
+        return $this->hasOne(User::className(), ['id' => 'executor']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProject()
+    {
+        return $this->hasOne(Project::className(), ['id' => 'project_id']);
     }
 }
