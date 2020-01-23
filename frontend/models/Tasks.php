@@ -4,6 +4,7 @@ namespace app\models;
 
 use common\models\User;
 use frontend\controllers\TaskController;
+use frontend\models\ChatLog;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -57,6 +58,25 @@ class Tasks extends \yii\db\ActiveRecord
             $model->save();
         }
         return parent::beforeValidate();
+    }
+
+    public function afterSave($insert, $changedAttribute)
+    {
+        if ($insert) {
+            ChatLog::create([
+                'username' => Yii::$app->user->identity->username,
+                'type' => 2,
+                'message' => 'has just created a task №' . $this->id,
+                'task_id' => $this->id,
+            ]);
+        } else { // update
+            ChatLog::create([
+                'username' => Yii::$app->user->identity->username,
+                'type' => 2,
+                'message' => 'has just updated a task №' . $this->id,
+                'task_id' => $this->id,
+            ]);
+        }
     }
 
     /**

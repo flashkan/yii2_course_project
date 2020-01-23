@@ -32,22 +32,39 @@ class SocketServer implements MessageComponentInterface
         $msgArray = json_decode($msg, true);
         ChatLog::create($msgArray);
         if ($msgArray['type'] === ChatLog::SHOW_HISTORY) {
-            $this->showHistory($from);
+            $this->showHistory($from, $msgArray);
         } else {
             foreach ($this->clients as $client) {
-                $client->send($msg);
+                /**
+                 * @var ConnectionInterface $client
+                 */
+                $msgArray['created_at'] = \Yii::$app->formatter->asDatetime(time());
+                $this->sendMessage($client, $msgArray);
             }
         }
     }
 
-    private function showHistory(ConnectionInterface $conn)
+    private function showHistory(ConnectionInterface $conn, $msg)
     {
         $chatLogsQuery = ChatLog::find()->where('type = 2')->orderBy('created_at ASC');
+
+        if (isset($msg['task_id'])) {
+            $chatLogsQuery->andWhere(['task_id' => (int) $msg['task_id']]);
+        }
+
+        if (isset($msg['project_id'])) {
+            $chatLogsQuery->andWhere(['project_id' => (int) $msg['project_id']]);
+        }
+
         foreach ($chatLogsQuery->each() as $chatLog) {
             /**
              * @var ChatLog $chatLog
              */
-            $this->sendMessage($conn, ['message' => $chatLog->message, 'username' => $chatLog->username]);
+            $this->sendMessage($conn, [
+                'message'=>$chatLog->message,
+                'username'=>$chatLog->username,
+                'created_at'=>\Yii::$app->formatter->asDatetime($chatLog->created_at)
+            ]);
         }
     }
 
@@ -65,7 +82,10 @@ class SocketServer implements MessageComponentInterface
      */
     private function sendHelloMessage(ConnectionInterface $conn)
     {
-        $this->sendMessage($conn, ['message' => 'Всем привет', 'username' => 'Чат студентов geekbrains.ru']);
+        $this->sendMessage($conn, [
+            'message' => 'Всем привет',
+            'username' => 'Чат студентов geekbrains.ru',
+            'created_at'=>\Yii::$app->formatter->asDatetime(time())]);
     }
 
     public function onClose(ConnectionInterface $conn)
