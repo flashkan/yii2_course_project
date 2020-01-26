@@ -14,9 +14,12 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'parsers' => [
+                'application/json' => \yii\web\JsonParser::class,
+            ]
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => \common\models\User::class,
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
@@ -40,12 +43,31 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/task',
+                    'extraPatterns' => [
+                        //'METHOD action' => 'actionFunction',
+                        'POST random/<count>' => 'random',
+                        'GET data-provider/<limit>' => 'data-provider',
+                        'GET auth' => 'auth',
+                    ],
+                ],
+                [
+                    'class' => \yii\rest\UrlRule::class,
+                    'controller' => 'api/user',
+                    'extraPatterns' => [],
+                ],
             ],
         ],
         'authManager' => [
             'class' => \yii\rbac\DbManager::class
-        ]
-
+        ],
+    ],
+    'modules' => [
+        'api' => [
+            'class' => \frontend\modules\api\Module::class,
+        ],
     ],
     'params' => $params,
 ];

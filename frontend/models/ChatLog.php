@@ -3,7 +3,7 @@
 namespace frontend\models;
 
 use app\models\Project;
-use app\models\Tasks;
+use app\models\Task;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -19,7 +19,7 @@ use yii\behaviors\TimestampBehavior;
  * @property string|null $message
  * @property int $type
  *
- * @property Tasks $task
+ * @property Task $task
  * @property Project $project
  */
 class ChatLog extends \yii\db\ActiveRecord
@@ -73,7 +73,7 @@ class ChatLog extends \yii\db\ActiveRecord
 
     public function getTask()
     {
-        return $this->hasOne(Tasks::class, ['id' => 'task_id']);
+        return $this->hasOne(Task::class, ['id' => 'task_id']);
     }
 
     public function getProject()

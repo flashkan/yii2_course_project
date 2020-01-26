@@ -3,11 +3,11 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Tasks */
-/* @var $template app\models\Tasks */
+/* @var $model app\models\Task */
+/* @var $template app\models\Task */
 
-$this->title = 'Create Tasks';
-$this->params['breadcrumbs'][] = ['label' => 'Tasks', 'url' => ['index']];
+$this->title = 'Create Task';
+$this->params['breadcrumbs'][] = ['label' => 'Task', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="tasks-create">

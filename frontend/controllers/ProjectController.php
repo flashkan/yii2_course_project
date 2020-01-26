@@ -2,7 +2,7 @@
 
 namespace frontend\controllers;
 
-use app\models\Tasks;
+use app\models\Task;
 use Yii;
 use app\models\Project;
 use yii\data\ActiveDataProvider;
@@ -55,7 +55,7 @@ class ProjectController extends Controller
     {
         $model = $this->findModel($id);
         $dateProvider = new ActiveDataProvider([
-            'query' => Tasks::find()->where("project_id = $id")
+            'query' => Task::find()->where("project_id = $id")
         ]);
         return $this->render('view', [
             'model' => $model,

@@ -19,7 +19,7 @@ use yii\behaviors\TimestampBehavior;
  * @property int|null $updated_at
  *
  * @property User $author
- * @property Tasks[] $tasks
+ * @property Task[] $tasks
  */
 class Project extends \yii\db\ActiveRecord
 {
@@ -108,7 +108,7 @@ class Project extends \yii\db\ActiveRecord
      */
     public function getTasks()
     {
-        return $this->hasMany(Tasks::className(), ['project_id' => 'id']);
+        return $this->hasMany(Task::className(), ['project_id' => 'id']);
     }
 
     public static function findProject($id) {
@@ -116,6 +116,6 @@ class Project extends \yii\db\ActiveRecord
     }
 
     public static function findAllTasks() {
-        return Tasks::find()->where('project_id = 1')->all();
+        return Task::find()->where('project_id = 1')->all();
     }
 }

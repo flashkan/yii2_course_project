@@ -7,6 +7,9 @@ use frontend\controllers\TaskController;
 use frontend\models\ChatLog;
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\Url;
+use yii\web\Link;
+use yii\web\Linkable;
 
 /**
  * This is the model class for table "tasks".
@@ -25,7 +28,7 @@ use yii\behaviors\TimestampBehavior;
  * @property User $author0
  * @property User $executor0
  */
-class Tasks extends \yii\db\ActiveRecord
+class Task extends \yii\db\ActiveRecord implements Linkable
 {
     /**
      * {@inheritdoc}
@@ -33,6 +36,31 @@ class Tasks extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'tasks';
+    }
+
+    public function fields()
+    {
+
+        return array_merge(parent::fields(),[]);
+    }
+
+    public function extraFields()
+    {
+        return [
+            'author',
+            'authorEmail' => function () {
+                return $this->author->email;
+            },
+
+        ];
+    }
+
+    public function getLinks()
+    {
+        return [
+            Link::REL_SELF => Url::to(['task/view', 'id' => $this->id]),
+            'authorEmailLink' => Url::to(['user/view', 'id'=>$this->author])
+        ];
     }
 
     /**
