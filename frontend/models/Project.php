@@ -3,6 +3,7 @@
 namespace app\models;
 
 use common\models\User;
+use frontend\models\ChatLog;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 
@@ -57,6 +58,25 @@ class Project extends \yii\db\ActiveRecord
                 'value' => time(),
             ]
         ];
+    }
+
+    public function afterSave($insert, $changedAttribute)
+    {
+        if ($insert) {
+            ChatLog::create([
+                'username' => Yii::$app->user->identity->username,
+                'type' => 2,
+                'message' => 'has just created a project №' . $this->id,
+                'project_id' => $this->id,
+            ]);
+        } else { // update
+            ChatLog::create([
+                'username' => Yii::$app->user->identity->username,
+                'type' => 2,
+                'message' => 'has just updated a project №' . $this->id,
+                'project_id' => $this->id,
+            ]);
+        }
     }
 
     /**
