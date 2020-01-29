@@ -6,16 +6,17 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tasks';
+$this->title = 'Task Temps';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tasks-index">
+<div class="task-temp-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Task Temp', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
 
 
     <?= GridView::widget([
@@ -28,25 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'name',
                 'format' => 'raw',
                 'value' => function ($data) {
-                    return Html::a($data->name, ["view?id=$data->id"]);
+                    return Html::a($data->name, ["../task/create",
+                        'name' => $data->name,
+                        'description' => $data->description,
+                        'executor' => $data->executor]);
                 },
             ],
-//            'description:ntext',
-//            'created_at',
-//            'updated_at',
-            //'status',
-            //'author',
+            'description',
             [
                 'attribute' => 'executor',
-                'value' => function ($date) {
+                'value' => function($date) {
                     return \common\models\User::findIdentity($date->executor)->email;
                 }
             ],
-            //'is_template',
-            //'template_id',
-            //'template_name',
 
             ['class' => 'yii\grid\ActionColumn'],
+            []
         ],
     ]); ?>
 

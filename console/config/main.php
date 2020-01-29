@@ -32,7 +32,7 @@ return [
         ],
         'authManager' => [
             'class' => \yii\rbac\DbManager::class
-        ]
+        ],
     ],
     'params' => $params,
 ];

@@ -6,15 +6,15 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Tasks';
+$this->title = 'Projects';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="tasks-index">
+<div class="project-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Tasks', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Project', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
 
@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+//            'author_id',
             [
                 'attribute' => 'name',
                 'format' => 'raw',
@@ -31,20 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($data->name, ["view?id=$data->id"]);
                 },
             ],
-//            'description:ntext',
-//            'created_at',
-//            'updated_at',
-            //'status',
-            //'author',
+            'description:ntext',
             [
-                'attribute' => 'executor',
+                'attribute' => 'status',
                 'value' => function ($date) {
-                    return \common\models\User::findIdentity($date->executor)->email;
+                    if ($date->status === 1) return 'Awaiting start';
+                    elseif ($date->status === 2) return 'Run';
+                    elseif ($date->status === 3) return 'Finished';
                 }
             ],
-            //'is_template',
-            //'template_id',
-            //'template_name',
+            //'created_at',
+            //'updated_at',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
