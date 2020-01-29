@@ -23,7 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
             [
                 'attribute' => 'name',
@@ -42,9 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return \common\models\User::findIdentity($date->executor)->email;
                 }
             ],
-
             ['class' => 'yii\grid\ActionColumn'],
-            []
         ],
     ]); ?>
 

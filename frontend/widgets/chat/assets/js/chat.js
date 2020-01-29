@@ -41,9 +41,10 @@ $('#send').click(function () {
 $(document).on('click', '.js-hide', function () {
     $('.js-chat-content').hide();
     $('.js-show').show();
+    $('.chat-popup').removeClass('border');
 });
 $(document).on('click', '.js-show', function () {
     $('.js-chat-content').show();
     $('.js-show').hide();
-
+    $('.chat-popup').addClass('border');
 });
