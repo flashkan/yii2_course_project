@@ -34,7 +34,9 @@ use yii\widgets\ActiveForm;
 
     <!--    --><? //= $form->field($model, 'author')->textInput() ?>
     <?php
-    $executors = \common\models\User::findAll(['status' => 10]);
+    $executors = \common\models\User::findAll([
+        'status' => 10
+    ]);
     $resultExecutors = \yii\helpers\ArrayHelper::map($executors,'id','email');
     ?>
 

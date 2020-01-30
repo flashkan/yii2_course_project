@@ -1,6 +1,8 @@
 <?php
+
 namespace backend\controllers;
 
+use common\models\User;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -20,6 +22,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['login', 'error', 'logout', 'index'],
                 'rules' => [
                     [
                         'actions' => ['login', 'error'],
@@ -28,7 +31,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['logout', 'index'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['admin'],
                     ],
                 ],
             ],
@@ -75,8 +78,12 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        if ($model->load(Yii::$app->request->post())) {
+            if (+User::findByUsername($model->username)->group_admin === 1) {
+                $model->login();
+            }
             return $this->goBack();
+
         } else {
             $model->password = '';
 

@@ -3,16 +3,16 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `{{%tasks}}`.
+ * Handles the creation of table `{{%task}}`.
  */
-class m200115_130328_create_tasks_table extends Migration
+class m200115_130328_create_task_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('{{%tasks}}', [
+        $this->createTable('{{%task}}', [
             'id' => $this->primaryKey(),
             'project_id' => $this->integer(),
             'name' => $this->string(),
@@ -31,6 +31,6 @@ class m200115_130328_create_tasks_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%tasks}}');
+        $this->dropTable('{{%task}}');
     }
 }

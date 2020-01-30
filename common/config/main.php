@@ -17,6 +17,9 @@ return [
             'thousandSeparator' => ' ',
             'currencyCode' => 'EUR',
         ],
+        'authManager' => [
+            'class' => \yii\rbac\DbManager::className()
+        ],
     ],
     'name' => 'My Task Tracker'
 ];

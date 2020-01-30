@@ -3,6 +3,7 @@
 namespace app\models;
 
 use common\models\User;
+use frontend\controllers\TaskController;
 use frontend\models\ChatLog;
 use Yii;
 use yii\behaviors\TimestampBehavior;

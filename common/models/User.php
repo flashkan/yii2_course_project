@@ -20,6 +20,7 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property integer $group_admin
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -58,6 +59,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['email'], 'email'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['group_admin'], 'integer'],
         ];
     }
 
@@ -161,6 +163,22 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * {@inheritdoc}
      */
+    public function setGroupAdmin($id)
+    {
+        $this->group_admin = $id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGroupAdmin()
+    {
+        return $this->group_admin;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
@@ -178,9 +196,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
+     * @param $password
+     * @throws \yii\base\Exception
      */
     public function setPassword($password)
     {
@@ -227,17 +244,17 @@ class User extends ActiveRecord implements IdentityInterface
         return $fields;
     }
 
-    public function beforeSave($insert)
-    {
-        if (Yii::$app->request->isPost) {
-            $this->generateAuthKey();
-            $this->generateEmailVerificationToken();
-            if (empty(Yii::$app->request->post('password'))){
-                $this->setPassword(Yii::$app->security->generatePasswordHash(6));
-            } else {
-                $this->setPassword(Yii::$app->request->post('password'));
-            }
-        }
-        return parent::beforeSave($insert);
-    }
+//    public function beforeSave($insert)
+//    {
+//        if (Yii::$app->request->isPost) {
+//            $this->generateAuthKey();
+//            $this->generateEmailVerificationToken();
+//            if (empty(Yii::$app->request->post('password'))){
+//                $this->setPassword(Yii::$app->security->generatePasswordHash(6));
+//            } else {
+//                $this->setPassword(Yii::$app->request->post('password'));
+//            }
+//        }
+//        return parent::beforeSave($insert);
+//    }
 }

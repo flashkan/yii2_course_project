@@ -16,12 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textInput(['maxlength' => true]) ?>
 
-    <?php
-    $executors = \common\models\User::findAll(['status' => 10]);
-    $resultExecutors = \yii\helpers\ArrayHelper::map($executors,'id','email');
-    ?>
-
-    <?= $form->field($model, 'executor')->dropDownList($resultExecutors) ?>
+    <?= $form->field($model, 'executor')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

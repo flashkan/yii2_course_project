@@ -2,9 +2,9 @@
 
 namespace frontend\controllers;
 
+use app\models\Project;
 use app\models\Task;
 use Yii;
-use app\models\Project;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

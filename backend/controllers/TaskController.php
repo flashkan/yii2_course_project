@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\controllers;
+namespace backend\controllers;
 
 use Yii;
 use app\models\Task;
@@ -20,31 +20,21 @@ class TaskController extends Controller
      */
     public function behaviors()
     {
-
         return [
             'verbs' => [
-                'class' => VerbFilter::class,
+                'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['POST'],
                 ],
             ],
             'access' => [
-                'class' => AccessControl::class,
-                'only' => ['update', 'view', 'create', 'delete'],
+                'class' => AccessControl::className(),
+                'only' => ['index', 'update', 'view', 'create', 'delete'],
                 'rules' => [
                     [
+                        'actions' => ['index', 'update', 'view', 'create', 'delete'],
                         'allow' => true,
-                        'actions' => ['update', 'view'],
-                        'roles' => ['@'],
-                        'matchCallback' => function ($rule, $action) {
-                            return (+\Yii::$app->user->id === $this->findModel(+\Yii::$app->request->get('id'))->attributes['author'] ||
-                                +\Yii::$app->user->id === $this->findModel(+\Yii::$app->request->get('id'))->attributes['executor']);
-                        }
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['create', 'delete'],
-                        'roles' => ['@'],
+                        'roles' => ['admin'],
                     ],
                 ],
             ],
@@ -57,9 +47,8 @@ class TaskController extends Controller
      */
     public function actionIndex()
     {
-        $userId = Yii::$app->user->id;
         $dataProvider = new ActiveDataProvider([
-            'query' => Task::find()->where("author = $userId")->orWhere("executor = $userId"),
+            'query' => Task::find(),
         ]);
 
         return $this->render('index', [
