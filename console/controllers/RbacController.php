@@ -1,9 +1,10 @@
 <?php
 
-
 namespace console\controllers;
+
 use common\models\User;
 use yii\console\Controller;
+
 class RbacController extends Controller
 {
     /**
@@ -20,8 +21,9 @@ class RbacController extends Controller
         $permission = \Yii::$app->authManager->createPermission('getMyActivity');
         \Yii::$app->authManager->add($permission);
     }
+
     /**
-     * @throws \yii\base\Exception
+     * @throws \Exception
      */
     public function actionAddAdmin()
     {
@@ -31,6 +33,7 @@ class RbacController extends Controller
             $user->username = 'admin';
             $user->email = 'admin@admin.ru';
             $user->setPassword('admin');
+            $user->setGroupAdmin(1);
             $user->generateAuthKey();
             if ($user->save()) {
                 echo 'good';

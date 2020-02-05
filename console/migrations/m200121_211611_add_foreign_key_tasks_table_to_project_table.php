@@ -12,7 +12,7 @@ class m200121_211611_add_foreign_key_tasks_table_to_project_table extends Migrat
      */
     public function safeUp()
     {
-        $this->addForeignKey('tasks_project_id_key', 'tasks', 'project_id', 'project', 'id');
+        $this->addForeignKey('tasks_project_id_key', 'task', 'project_id', 'project', 'id');
     }
 
     /**
@@ -20,7 +20,7 @@ class m200121_211611_add_foreign_key_tasks_table_to_project_table extends Migrat
      */
     public function safeDown()
     {
-        $this->dropForeignKey('tasks_project_id_key', 'tasks');
+        $this->dropForeignKey('tasks_project_id_key', 'task');
     }
 
     /*
