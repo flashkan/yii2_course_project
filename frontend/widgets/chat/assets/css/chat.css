@@ -23,7 +23,6 @@
     position: fixed;
     bottom: 0;
     right: 15px;
-    border: 3px solid #f1f1f1;
     z-index: 9;
 }
 
@@ -35,6 +34,7 @@
     position: absolute;
     right: 20px;
     bottom: 63px;
+    border-radius: 10px;
 }
 
 /* Full-width textarea */
@@ -74,4 +74,8 @@
 /* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
     opacity: 1;
+}
+
+.border {
+    border: #0f0f0f solid 1px;
 }

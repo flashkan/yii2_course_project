@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use yii\helpers\Html;
@@ -38,17 +39,14 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
         $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
     } else {
-        $menuItems[] = ['label' => 'Projects', 'url' => ['/project']];
-        $menuItems[] = ['label' => 'Task', 'url' => ['/task']];
-        $menuItems[] = ['label' => 'Task Template', 'url' => ['/task-temp']];
-        $menuItems[] = ['label' => 'Chat', 'url' => ['/chat']];
+        $menuItems[] = ['label' => 'Projects', 'url' => ['/project/index']];
+        $menuItems[] = ['label' => 'Task', 'url' => ['/task/index']];
+        $menuItems[] = ['label' => 'Task Template', 'url' => ['/task-temp/index']];
         $menuItems[] = '<li>'
             . Html::beginForm(['/site/logout'], 'post')
             . Html::submitButton(
@@ -82,6 +80,9 @@ AppAsset::register($this);
     </div>
 </footer>
 
+<?php if (!Yii::$app->user->isGuest) : ?>
+    <?= \frontend\widgets\chat\Chat::widget(); ?>
+<?php endif; ?>
 <?php $this->endBody() ?>
 </body>
 </html>
